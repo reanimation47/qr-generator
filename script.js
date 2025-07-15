@@ -2,10 +2,38 @@
 class QRGenerator {
     constructor() {
         this.initializeElements();
+        this.setMobileDefaults();
         this.bindEvents();
         this.currentQRData = null;
-        this.currentSize = 512;
+        this.currentSize = this.getDefaultSize();
         this.checkLibraries();
+    }
+
+    // Detect mobile devices and set appropriate defaults
+    setMobileDefaults() {
+        this.isMobile = this.detectMobile();
+        console.log('Device type:', this.isMobile ? 'Mobile' : 'Desktop');
+        
+        // Set default size based on device type
+        const defaultSize = this.getDefaultSize();
+        if (this.sizeSelect) {
+            this.sizeSelect.value = defaultSize;
+        }
+    }
+
+    // Detect if user is on mobile device
+    detectMobile() {
+        // Multiple detection methods for better accuracy
+        const userAgent = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const screenSize = window.innerWidth <= 768;
+        const touchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        return userAgent || (screenSize && touchDevice);
+    }
+
+    // Get appropriate default size based on device
+    getDefaultSize() {
+        return this.isMobile ? 256 : 512;
     }
 
     checkLibraries() {
