@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Generator</title>
+    <meta name="description" content="Simple, elegant QR code generator with multiple download formats">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Local QR Code Generation Library -->
+    <script src="libs/qrcode.min.js"></script>
+    
+    <!-- Local PDF Generation Library -->
+    <script src="libs/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">QR Generator</h1>
+            <p class="subtitle">Create QR codes instantly with multiple download formats</p>
+        </header>
+
+        <main class="main">
+            <section class="input-section">
+                <div class="input-group">
+                    <label for="qr-input" class="input-label">Enter text or URL</label>
+                    <textarea 
+                        id="qr-input" 
+                        class="text-input" 
+                        placeholder="Type your text, URL, or any content here..."
+                        rows="3"
+                    ></textarea>
+                </div>
+                
+                <button id="generate-btn" class="generate-btn">
+                    <span class="btn-text">Generate QR Code</span>
+                    <div class="loading-spinner" style="display: none;"></div>
+                </button>
+            </section>
+
+            <section class="qr-display" id="qr-display" style="display: none;">
+                <div class="qr-container">
+                    <canvas id="qr-canvas" class="qr-canvas"></canvas>
+                    <div id="qr-svg" class="qr-svg" style="display: none;"></div>
+                </div>
+                
+                <div class="download-section">
+                    <h3 class="download-title">Download Options</h3>
+                    <div class="download-buttons">
+                        <button id="download-png" class="download-btn">
+                            <span class="download-icon">📱</span>
+                            PNG Image
+                        </button>
+                        <button id="download-svg" class="download-btn">
+                            <span class="download-icon">🎨</span>
+                            SVG Vector
+                        </button>
+                        <button id="download-pdf" class="download-btn">
+                            <span class="download-icon">📄</span>
+                            PDF Document
+                        </button>
+                    </div>
+                    
+                    <div class="size-options">
+                        <label for="qr-size" class="size-label">Size:</label>
+                        <select id="qr-size" class="size-select">
+                            <option value="256">256x256</option>
+                            <option value="512" selected>512x512</option>
+                            <option value="1024">1024x1024</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button id="clear-btn" class="clear-btn">Clear & Start Over</button>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p class="footer-text">Built with ❤️ using pure HTML, CSS & JavaScript</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
