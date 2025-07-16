@@ -60,9 +60,6 @@ class QRGenerator {
     initializeElements() {
         // Input elements
         this.qrInput = document.getElementById('qr-input');
-        this.generateBtn = document.getElementById('generate-btn');
-        this.btnText = this.generateBtn.querySelector('.btn-text');
-        this.loadingSpinner = this.generateBtn.querySelector('.loading-spinner');
         
         // Display elements
         this.qrDisplay = document.getElementById('qr-display');
@@ -78,14 +75,6 @@ class QRGenerator {
     }
 
     bindEvents() {
-        // Generate QR code
-        this.generateBtn.addEventListener('click', () => this.generateQR());
-        this.qrInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                this.generateQR();
-            }
-        });
-
         // Download events
         this.downloadPngBtn.addEventListener('click', () => this.downloadPNG());
         this.downloadSvgBtn.addEventListener('click', () => this.downloadSVG());
@@ -104,6 +93,9 @@ class QRGenerator {
             debounceTimer = setTimeout(() => {
                 if (this.qrInput.value.trim()) {
                     this.generateQR();
+                } else {
+                    // Hide QR display when input is empty
+                    this.qrDisplay.style.display = 'none';
                 }
             }, 500);
         });
@@ -125,7 +117,6 @@ class QRGenerator {
         }
 
         console.log('Generating QR code for:', text);
-        this.showLoading(true);
 
         try {
             // Store current data
@@ -158,8 +149,6 @@ class QRGenerator {
                 size: this.currentSize
             });
             this.showError(`Failed to generate QR code: ${error.message}`);
-        } finally {
-            this.showLoading(false);
         }
     }
 
@@ -378,17 +367,6 @@ class QRGenerator {
         this.qrInput.focus();
     }
 
-    showLoading(show) {
-        if (show) {
-            this.btnText.style.display = 'none';
-            this.loadingSpinner.style.display = 'block';
-            this.generateBtn.disabled = true;
-        } else {
-            this.btnText.style.display = 'block';
-            this.loadingSpinner.style.display = 'none';
-            this.generateBtn.disabled = false;
-        }
-    }
 
     showError(message) {
         this.showNotification(message, 'error');
@@ -498,10 +476,13 @@ document.addEventListener('keydown', (e) => {
         }
     }
     
-    // Ctrl/Cmd + Enter to generate
+    // Ctrl/Cmd + Enter to focus input (since generation is automatic)
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
-        document.getElementById('generate-btn').click();
+        const qrInput = document.getElementById('qr-input');
+        if (qrInput) {
+            qrInput.focus();
+        }
     }
 });
 
